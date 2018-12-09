@@ -1,7 +1,7 @@
 import markdown
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Post, Category
+from .models import Post, Category, Tag
 from comments.forms import CommentForm
 from django.views.generic import ListView, DetailView
 
@@ -54,6 +54,16 @@ class PostDetailView(DetailView):
         comment_list = self.object.comment_set.all()
         context.update({'form': form, 'comment_list': comment_list})
         return context
+
+
+class TagView(ListView):
+    model = Post
+    template_name = 'blog/index.html'
+    context_object_name = 'post_list'
+
+    def get_queryset(self):
+        tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
+        return super(TagView, self).get_queryset().filter(tag=tag)
 # def detail(request, pk):
 #     post = get_object_or_404(Post, pk=pk)
 #     post.increase_views()
