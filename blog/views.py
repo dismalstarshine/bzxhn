@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import Post, Category, Tag
 from comments.forms import CommentForm
 from django.views.generic import ListView, DetailView
+from django.db.models import Q
 
 
 class IndexView(ListView):
@@ -64,6 +65,16 @@ class TagView(ListView):
     def get_queryset(self):
         tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
         return super(TagView, self).get_queryset().filter(tag=tag)
+
+
+def search(request):
+    q = request.GET.get('q')
+    error_msg = ''
+    if not q:
+        error_msg = "也许是搜索功能写的太差，并没有搜索到呢"
+        return render(request, 'blog/index.html', {'error_msg': error_msg})
+    post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'blog/index.html', {'error_msg': error_msg, 'post_list': post_list})
 # def detail(request, pk):
 #     post = get_object_or_404(Post, pk=pk)
 #     post.increase_views()
