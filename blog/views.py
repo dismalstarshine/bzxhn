@@ -71,7 +71,7 @@ def search(request):
     q = request.GET.get('q')
     error_msg = ''
     if not q:
-        error_msg = "也许是搜索功能写的太差，并没有搜索到呢"
+        error_msg = "也许是搜索功能写的太差，并没有搜索到什么呢"
         return render(request, 'blog/index.html', {'error_msg': error_msg})
     post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
     return render(request, 'blog/index.html', {'error_msg': error_msg, 'post_list': post_list})

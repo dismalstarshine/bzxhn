@@ -1,9 +1,9 @@
-<!DOCTYPE html>
 {% extends 'base.html' %}
+
 {% block main %}
     {% if error_msg %}
         <p>{{ error_msg }}</p>
-{% endif %}
+    {% endif %}
                 {% for post in post_list %}
                 <article class="post post-{{ post.pk }}">
                     <header class="entry-header">
@@ -39,7 +39,7 @@
                 {% if is_paginated %}
                 <!--div class="pagination-simple"-->
                     <div class="pagination" style="margin-left: 50%;transform: translate(-50%, 0)">
-                    {% if page.obj.has_previous %}
+                    {% if page_obj.has_previous %}
                     <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
                     {% endif %}
                     <span class="current">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</span>
